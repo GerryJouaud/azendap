@@ -1,0 +1,30 @@
+# Déclaration des stages dans l'ordre d'exécution
+stages:
+  - build
+  - test
+  - deploy
+
+# Variables globales disponibles dans tous les jobs
+variables:
+  BUILD_ENV: dev
+
+# --- STAGE BUILD ---
+build:
+  stage: build
+  image: python:3.10-slim
+  script:
+    - echo "📦 Installation des dépendances..."
+  
+# --- STAGE TEST ---
+test:
+  stage: test
+  image: python:3.10-slim
+  script:
+    - echo "📦 Test PART"
+
+# --- STAGE DEPLOY ---
+deploy:
+  stage: deploy
+  image: python:3.10-slim
+  script:
+    - echo "🚀 Déploiement "
