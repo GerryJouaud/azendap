@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
 from typing import Annotated
-from db.database import Base,engine,SessionLocal
-from backend.app import models
 from sqlalchemy.orm import Session
+from db.database import Base,engine,SessionLocal,get_db
+from app import models
 
 app=FastAPI()
+
+#Create tables
 models.Base.metadata.create_all(bind=engine)
 
 class PostBase(BaseModel):
@@ -16,13 +18,6 @@ class PostBase(BaseModel):
 class UserBase(BaseModel):
     username:str
     
-def get_db():
-    db=SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        
 db_dependency=Annotated[Session, Depends(get_db)]
 
 @app.post("/users/", status_code=status.HTTP_201_CREATED)
